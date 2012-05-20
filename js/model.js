@@ -7,26 +7,21 @@ JSONNode = function(engine, url){
 	var buf = new CL3D.MeshBuffer();
 	this.MyMesh.AddMeshBuffer(buf);
           
-    // Load the json portion of the model
+    // Load the json mesh
 	var jsonXhr = new XMLHttpRequest();
 	jsonXhr.open('GET', url, true);
-	jsonXhr.onload = function() {
-			
-			
-			model = JSON.parse(this.responseText);
-			
-			buf.Indices = model.indices;
-			
-			scale = model.scale;
-			
-			for (var i=0; i<model.vertices.length; i++) {
-				var x = model.vertices[i*3]*scale;
-				var y = model.vertices[i*3+1]*scale;
-				var z = model.vertices[i*3+2]*scale;
-				var u = model.uvs[i*2];
-				var v = model.uvs[i*2+1];
-				buf.Vertices.push(self.createVertex( x, y, z,  u, v) );
-			}
+	jsonXhr.onload = function() {		
+		model = JSON.parse(this.responseText);
+		buf.Indices = model.indices;
+		scale = model.scale;
+		for (var i=0; i<model.vertices.length; i++) {
+			var x = model.vertices[i*3]*scale;
+			var y = model.vertices[i*3+1]*scale;
+			var z = model.vertices[i*3+2]*scale;
+			var u = model.uvs[i*2];
+			var v = model.uvs[i*2+1];
+			buf.Vertices.push(self.createVertex( x, y, z,  u, v) );
+		}
 	};
 		
 	jsonXhr.send(null);
